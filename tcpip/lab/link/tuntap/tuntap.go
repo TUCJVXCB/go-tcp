@@ -89,3 +89,13 @@ func open(name string, flags uint16) (int, error) {
 	}
 	return fd, nil
 }
+
+func SetRoute(name, cidr string) (err error) {
+	// ip route add 192.168.1.0/24 dev tap0
+	out, cmdErr := exec.Command("ip", "route", "add", cidr, "dev", name).CombinedOutput()
+	if cmdErr != nil {
+		err = fmt.Errorf("%v:%v", cmdErr, string(out))
+		return
+	}
+	return
+}
